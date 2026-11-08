@@ -1,0 +1,241 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 8px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.lab-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 760px;
+  height: min(760px, calc(100vh - 16px));
+  height: min(760px, calc(100dvh - 16px));
+  min-height: 0;
+  margin: 0 auto;
+  padding: 16px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, Canvas 96%, transparent);
+  color: CanvasText;
+}
+
+.lab-header {
+  flex: 0 0 auto;
+}
+
+.lab-kicker {
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 0.65;
+}
+
+.lab-card h1 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.lab-card h2 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.lab-copy {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  opacity: 0.82;
+}
+
+.lab-tabs {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 6px;
+  margin: 12px 0 0;
+  padding: 0 0 9px;
+  overflow-x: auto;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  scrollbar-width: thin;
+}
+
+.lab-tab {
+  flex: 0 0 auto;
+  padding: 7px 11px;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0.72;
+}
+
+.lab-tab.is-active {
+  border-color: color-mix(in srgb, currentColor 42%, transparent);
+  background: color-mix(in srgb, currentColor 9%, transparent);
+  font-weight: 700;
+  opacity: 1;
+}
+
+.lab-tab:focus-visible,
+.lab-actions button:focus-visible,
+.file-button:focus-within {
+  outline: 2px solid var(--focus-ring, currentColor);
+  outline-offset: 2px;
+}
+
+.lab-panel-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: 2px;
+  padding: 0 4px 4px 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.lab-panel {
+  min-height: 0;
+}
+
+.lab-panel[hidden] {
+  display: none !important;
+}
+
+.lab-section {
+  margin: 0;
+  padding: 14px 0;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.lab-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.lab-actions button,
+.file-button {
+  padding: 8px 12px;
+  border: 1px solid color-mix(in srgb, currentColor 24%, transparent);
+  border-radius: 9px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.file-button input {
+  display: none;
+}
+
+.lab-check {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 13px;
+}
+
+.capability-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 6px;
+}
+
+.capability {
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: color-mix(in srgb, currentColor 5%, transparent);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 12px;
+}
+
+.capability-ok {
+  font-weight: 650;
+}
+
+.capability-missing {
+  opacity: 0.55;
+}
+
+.lab-status {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.lab-footer-status {
+  flex: 0 0 auto;
+  max-height: 3.2em;
+  margin-top: 8px;
+  padding-top: 8px;
+  overflow: auto;
+  border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.lab-pre {
+  max-height: 180px;
+  overflow: auto;
+  margin: 0;
+  padding: 10px;
+  border-radius: 8px;
+  background: color-mix(in srgb, currentColor 5%, transparent);
+  font-size: 11px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (max-height: 520px) {
+  body {
+    padding: 4px;
+  }
+
+  .lab-card {
+    height: min(760px, calc(100vh - 8px));
+    height: min(760px, calc(100dvh - 8px));
+    padding: 8px;
+  }
+
+  .lab-kicker,
+  .lab-copy {
+    display: none;
+  }
+
+  .lab-card h1 {
+    margin-bottom: 0;
+    font-size: 17px;
+  }
+
+  .lab-tabs {
+    margin-top: 6px;
+    padding-bottom: 5px;
+  }
+
+  .lab-tab {
+    padding: 5px 8px;
+  }
+
+  .lab-footer-status {
+    max-height: 2.5em;
+    margin-top: 4px;
+    padding-top: 4px;
+  }
+}

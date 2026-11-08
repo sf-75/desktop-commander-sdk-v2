@@ -1,0 +1,60 @@
+name: SDK v2 focused validation
+
+# First public revision: run only when explicitly requested.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  focus:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    env:
+      DESKTOP_COMMANDER_DISABLE_TELEMETRY: '1'
+      DC_TEST_THROTTLE: '1'
+      DC_TEST_MAX_CPU_PCT: '90'
+      DC_TEST_MIN_FREE_RAM_GB: '2'
+      DC_TEST_CAPACITY_MAX_WAIT_MS: '300000'
+      DC_TEST_EXTERNAL_UPLOAD: '0'
+      DC_TEST_PERF_GATE: '0'
+      DC_TEST_PERF_STREAM: '0'
+      DC_FLAG_URL: 'http://127.0.0.1:9/'
+      PUPPETEER_SKIP_DOWNLOAD: '1'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Focused SDK v2 regressions
+        run: >-
+          node test/run-all-tests.js
+          test-mcp-termination-contract.js
+          test-prompt-detection.js
+          test-sdk-v2-modern-protocol.js
+          test-sdk-v2-chatgpt-legacy-discover.js
+          test-sdk-v2-mrtr-app.js
+          test-sdk-v2-mrtr-ui.js
+          test-sdk-v2-concurrent-server-search-session-isolation.js
+          test-sdk-v2-concurrent-server-process-session-isolation.js
+          test-sdk-v2-server-close-preserves-processes.js
+          test-sdk-v2-skills-extension.js
+      - name: Native OS process regressions
+        run: >-
+          node test/integration/run-all-integration-tests.js
+          test-terminate-process-tree-os.js
+          test-process-state-detection-os.js

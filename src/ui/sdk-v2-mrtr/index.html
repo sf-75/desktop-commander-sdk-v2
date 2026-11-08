@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SDK v2 Multi-Round-Trip Demo</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="mrtr-card" aria-labelledby="mrtr-title">
+    <div class="mrtr-kicker">Desktop Commander · MCP SDK v2</div>
+    <h1 id="mrtr-title">この提案を承認しますか？</h1>
+    <p id="mrtr-copy" class="mrtr-copy">
+      SDK v2 のmulti-round-trip確認フローを検証するデモです。この操作自体には副作用がありません。
+    </p>
+    <p class="mrtr-note">
+      2026 protocol対応hostではnative input_required、未対応hostではこのApp UIを使用します。
+    </p>
+    <div class="mrtr-actions" aria-label="確認操作">
+      <button id="mrtr-accept" class="mrtr-primary" type="button">承認</button>
+      <button id="mrtr-decline" type="button">取消</button>
+    </div>
+    <div id="mrtr-status" class="mrtr-status" role="status" aria-live="polite">
+      承認または取消を選んでください。
+    </div>
+  </main>
+  <script src="./sdk-v2-mrtr-runtime.js"></script>
+</body>
+</html>
