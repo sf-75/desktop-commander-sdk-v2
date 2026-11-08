@@ -204,6 +204,8 @@ export default async function runTests() {
     await waitUntil(() => runningPowerShellHelpers().length === 0, 10000, 'the helpers have ended');
     await withEnv(testCase.env ?? {}, async () => {
       for (const shell of shells) {
+        // Only pwsh uses -Login on non-Windows; powershell does not source ~/.profile.
+        if (testCase.loginProfile && !['pwsh', 'pwsh.exe'].includes(path.basename(shell).toLowerCase())) continue;
         for (const [command, expected] of testCase.checks) {
           const answer = await commandManager.checkCommand(command, shell);
           const right = JSON.stringify(answer) === JSON.stringify(expected);

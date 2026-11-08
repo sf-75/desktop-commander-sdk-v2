@@ -139,6 +139,18 @@ async function runTests() {
         assertGone(redact(`running on ${host} now`), host, 'the host name');
     });
 
+    await test('a UUID inside a macOS-style hostname is masked as one host', () => {
+        const originalHostname = os.hostname;
+        const host = `sat12-jr307-${UUID}-CE50E470D6DD.local`;
+        try {
+            os.hostname = () => host;
+            const out = redact(`Starting MCP Device on ${host}...`);
+            assert.strictEqual(out, 'Starting MCP Device on <host>...');
+        } finally {
+            os.hostname = originalHostname;
+        }
+    });
+
     await test('a plain status line comes out unchanged', () => {
         const line = "Channel subscribed (recovered after 2 attempts) — socket=open(1) ch=joined attempt=0";
         assert.strictEqual(redact(line), line);
