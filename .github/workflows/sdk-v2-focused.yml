@@ -35,7 +35,9 @@ jobs:
       DESKTOP_COMMANDER_DISABLE_TELEMETRY: '1'
       DC_TEST_THROTTLE: '1'
       DC_TEST_MAX_CPU_PCT: '90'
-      DC_TEST_MIN_FREE_RAM_GB: '2'
+      # macOS arm64's os.freemem() excludes reclaimable memory (~0.3GiB in CI).
+      # Keep CPU throttling; avoid treating that low free-page count as a hard stop.
+      DC_TEST_MIN_FREE_RAM_GB: ${{ inputs.target_os == 'macos-latest' && '0' || '2' }}
       DC_TEST_CAPACITY_MAX_WAIT_MS: '300000'
       DC_TEST_EXTERNAL_UPLOAD: '0'
       DC_TEST_PERF_GATE: '0'
@@ -52,6 +54,9 @@ jobs:
         with:
           node-version: '24'
           cache: npm
+      - name: Verify Apple Silicon runner
+        if: ${{ inputs.target_os == 'macos-latest' }}
+        run: test "$(uname -m)" = "arm64"
       - name: Install
         run: npm ci
       - name: Build
