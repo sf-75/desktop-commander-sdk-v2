@@ -14,6 +14,14 @@ on:
           - windows-latest
           - macos-latest
           - macos-26-intel
+      scope:
+        description: Select focused or full root test suite (full requires macos-26-intel)
+        required: true
+        type: choice
+        default: focus
+        options:
+          - focus
+          - full
 
 permissions:
   contents: read
@@ -21,7 +29,8 @@ permissions:
 jobs:
   focus:
     runs-on: ${{ inputs.target_os }}
-    timeout-minutes: 40
+    if: ${{ inputs.scope != 'full' || inputs.target_os == 'macos-26-intel' }}
+    timeout-minutes: ${{ inputs.scope == 'full' && 180 || 40 }}
     env:
       DESKTOP_COMMANDER_DISABLE_TELEMETRY: '1'
       DC_TEST_THROTTLE: '1'
@@ -48,6 +57,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Focused SDK v2 regressions
+        if: ${{ inputs.scope == 'focus' }}
         run: >-
           node test/run-all-tests.js
           test-mcp-termination-contract.js
@@ -60,7 +70,11 @@ jobs:
           test-sdk-v2-concurrent-server-process-session-isolation.js
           test-sdk-v2-server-close-preserves-processes.js
           test-sdk-v2-skills-extension.js
+      - name: Full root suite (macOS Intel only)
+        if: ${{ inputs.scope == 'full' }}
+        run: node test/run-all-tests.js
       - name: Native OS process regressions
+        if: ${{ inputs.scope == 'focus' }}
         run: >-
           node test/integration/run-all-integration-tests.js
           test-terminate-process-tree-os.js
